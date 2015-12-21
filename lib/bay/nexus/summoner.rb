@@ -11,10 +11,10 @@ end
 module Summoner
 
   def initialize options={}
-    start_daemon
+    init_daemon
   end
 
-  def start_daemon
+  def init_daemon
     options = {
       log_output: false,
       backtrace: false,
@@ -35,7 +35,11 @@ module Summoner
     @daemon.applications.last
   end
 
-  def stop
+  def start_daemon
+    daemon.start
+  end
+
+  def stop_daemon
     daemon.stop
   end
 
