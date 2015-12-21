@@ -10,6 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["zsoltf@me.com"]
 
   spec.summary       = %q{Daemon manager}
+  spec.description   = %q{Daemon manager}
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or

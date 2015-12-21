@@ -3,7 +3,7 @@ require "bay/bladerunner/version"
 module Bay
   module Bladerunner
 
-    def self.start
+    def self.power_up
 
       unless self.daemons.empty?
         puts "Bladerunner is already running"
@@ -37,7 +37,7 @@ module Bay
 
     def self.monitor
 
-      self.start unless self.running?
+      self.power_up unless self.running?
 
       self.status
 
@@ -63,7 +63,34 @@ module Bay
       { alive: alive, dead: dead }
     end
 
-    def self.stop
+    def self.start replicant
+      self.can_shutdown = false
+      daemon = self.daemon replicant
+      unless daemon.pid
+        daemon.start_daemon
+      else
+        puts "daemon #{daemon} is still running"
+      end
+      self.can_shutdown = true
+    end
+
+    def self.stop replicant
+      daemon = self.daemon replicant
+      if daemon.pid
+        daemon.stop_daemon
+      else
+        puts "daemon #{daemon} was not running"
+      end
+    end
+
+    def self.can_shutdown= bool
+      @sd = bool
+    end
+    def self.can_shutdown
+      @sd
+    end
+
+    def self.power_down
 
       unless self.running?
         puts "Bladerunner has not been started yet"
@@ -75,7 +102,7 @@ module Bay
       @@daemons.count.times do
         daemon = @@daemons.pop
         if daemon.pid
-          pid = Process.fork { daemon.stop }
+          pid = Process.fork { daemon.stop_daemon }
           Process.detach(pid)
         else
           puts "daemon #{daemon} was not running"
