@@ -10,7 +10,7 @@ module Bay
       end
 
       def log message
-        @logger ||= Logger.new(filename)
+        @logger ||= Logger.new(log_path)
         @logger.debug message
       end
 
