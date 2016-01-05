@@ -17,6 +17,8 @@ module Bay
       @@daemons << yield
       @@daemons = @@daemons.flatten
 
+      self.can_shutdown = true
+
     end
 
     def self.daemons
