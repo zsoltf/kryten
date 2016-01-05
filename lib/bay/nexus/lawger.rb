@@ -4,9 +4,12 @@ module Bay
   module Nexus
     module Lawger
 
-      def log message
+      def log_path
         classname = self.class.to_s.gsub('::','_').downcase
-        filename = "/tmp/#{classname}.log"
+        "/tmp/#{classname}.log"
+      end
+
+      def log message
         @logger ||= Logger.new(filename)
         @logger.debug message
       end
