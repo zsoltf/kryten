@@ -25,7 +25,7 @@ module Bay
           show_status_callback: :customstatus
         }
 
-        name = self.class.to_s.downcase
+        name = self.class.to_s.gsub('::','.').downcase
         @daemon = Daemons.run_proc(name, options) { start }
 
       end
