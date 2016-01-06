@@ -16,6 +16,7 @@ module Bay
       @@daemons = []
       @@daemons << yield
       @@daemons = @@daemons.flatten
+      @@daemons.each { |d| d.init_daemon }
 
       self.can_shutdown = true
 
