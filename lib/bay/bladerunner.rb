@@ -80,7 +80,7 @@ module Bay
     def self.stop replicant
       daemon = self.daemon replicant
       if daemon.pid
-        daemon.stop_daemon
+        daemon.stop
       else
         puts "daemon #{daemon} was not running"
       end
@@ -105,7 +105,7 @@ module Bay
       @@daemons.count.times do
         daemon = @@daemons.pop
         if daemon.pid
-          pid = Process.fork { daemon.stop_daemon }
+          pid = Process.fork { daemon.stop }
           Process.detach(pid)
         else
           puts "daemon #{daemon} was not running"
