@@ -95,6 +95,8 @@ module Bay
 
     def self.power_down
 
+      return unless self.can_shutdown
+
       unless self.running?
         puts "Bladerunner has not been started yet"
         raise "Bladerunner shut down"
