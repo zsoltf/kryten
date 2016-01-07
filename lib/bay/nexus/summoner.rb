@@ -38,7 +38,7 @@ module Bay
         daemon.start
       end
 
-      def stop_daemon
+      def stop
         daemon.stop
       end
 

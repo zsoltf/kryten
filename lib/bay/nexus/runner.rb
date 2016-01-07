@@ -7,8 +7,8 @@ module Bay
         setup
 
         @running = true
-        Signal.trap("INT", proc { stop })
-        Signal.trap("TERM", proc { stop })
+        Signal.trap("INT", proc { stop_running })
+        Signal.trap("TERM", proc { stop_running })
 
         while @running do
           sleep @timer || 4
@@ -25,7 +25,7 @@ module Bay
         log "running #{self}"
       end
 
-      def stop
+      def stop_running
         # no logging here, this is a signal handler
         @running = false
       end
