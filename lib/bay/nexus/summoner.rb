@@ -27,7 +27,7 @@ module Bay
       end
 
       def daemon
-        init_daemon unless @daemon
+        raise 'Initialize daemon first with init_daemon' unless @daemon
         # run_proc with :multiple creates an application group (stack)
         # if there are multiple daemons with the same name,
         # the curent daemon is the last entry
