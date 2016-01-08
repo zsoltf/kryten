@@ -8,51 +8,48 @@ module Daemons
   end
 end
 
-module Bay
-  module Nexus
-    module Summoner
+module Bay::Nexus::Summoner
 
-      def init_daemon
-        options = {
-          log_output: false,
-          backtrace: false,
-          multiple: true,
-          ARGV: ['start'],
-          show_status_callback: :customstatus
-        }
+  def init_daemon
+    options = {
+      log_output: false,
+      backtrace: false,
+      multiple: true,
+      ARGV: ['start'],
+      show_status_callback: :customstatus
+    }
 
-        name = self.class.to_s.gsub('::','_').downcase
-        @daemon = Daemons.run_proc(name, options) { start }
+    name = self.class.to_s.gsub('::','_').downcase
+    @daemon = Daemons.run_proc(name, options) { start }
 
-      end
-
-      def daemon
-        raise 'Initialize daemon first with init_daemon' unless @daemon
-        # run_proc with :multiple creates an application group (stack)
-        # if there are multiple daemons with the same name,
-        # the curent daemon is the last entry
-        @daemon.applications.last
-      end
-
-      def start_daemon
-        daemon.start
-      end
-
-      def stop
-        daemon.stop
-      end
-
-      def pid
-        daemon.pid.pid
-      end
-
-      def status
-        daemon.show_status
-      end
-
-      def name
-        [daemon.pid.progname, daemon.pid.number + 1].join("-")
-      end
-    end
   end
+
+  def daemon
+    raise 'Initialize daemon first with init_daemon' unless @daemon
+    # run_proc with :multiple creates an application group (stack)
+    # if there are multiple daemons with the same name,
+    # the curent daemon is the last entry
+    @daemon.applications.last
+  end
+
+  def start_daemon
+    daemon.start
+  end
+
+  def stop
+    daemon.stop
+  end
+
+  def pid
+    daemon.pid.pid
+  end
+
+  def status
+    daemon.show_status
+  end
+
+  def name
+    [daemon.pid.progname, daemon.pid.number + 1].join("-")
+  end
+
 end
