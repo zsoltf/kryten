@@ -3,7 +3,16 @@ require 'daemons'
 module Daemons
   class Application
     def customstatus(app)
-      "i r logger #{app}"
+      app_name = app.options[:app_name]
+      pid = app.pid.pid.to_s
+      running = app.running? ? 'running' : 'not running'
+      running_and_pid = if app.running? and app.pid.exist?
+                          " [pid #{pid}]"
+                        end
+      running_no_pid = if app.pid.exist? and not app.running?
+                         " (but pid-file exists: #{pid}')"
+                       end
+      "#{app_name}: #{running}#{running_and_pid}#{running_no_pid}"
     end
   end
 end
