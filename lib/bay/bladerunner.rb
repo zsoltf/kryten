@@ -97,21 +97,19 @@ module Bay
 
       return unless self.can_shutdown
 
-      unless self.running?
-        puts "Bladerunner has not been started yet"
-        raise "Bladerunner shut down"
-      end
-
-      puts "stopping all daemons"
-
-      @@daemons.count.times do
-        daemon = @@daemons.pop
-        if daemon.pid
-          pid = Process.fork { daemon.stop }
-          Process.detach(pid)
-        else
-          puts "daemon #{daemon} was not running"
+      if self.running?
+        puts "stopping all daemons"
+        @@daemons.count.times do
+          daemon = @@daemons.pop
+          if daemon.pid
+            pid = Process.fork { daemon.stop }
+            Process.detach(pid)
+          else
+            puts "daemon #{daemon} was not running"
+          end
         end
+      else
+        puts "Bladerunner has not been started yet"
       end
 
     end
