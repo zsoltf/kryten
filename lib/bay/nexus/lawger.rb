@@ -3,7 +3,7 @@ require 'logger'
 module Bay::Nexus::Lawger
 
   def log_path
-    "tmp/#{name}.log"
+    "/tmp/#{name}.log"
   end
 
   def log message
