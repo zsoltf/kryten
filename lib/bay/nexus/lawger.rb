@@ -3,8 +3,7 @@ require 'logger'
 module Bay::Nexus::Lawger
 
   def log_path
-    classname = self.class.to_s.gsub('::','_').downcase
-    "/tmp/#{classname}.log"
+    "tmp/#{name}.log"
   end
 
   def log message

@@ -1,7 +1,7 @@
 module Bay::Nexus::Runner
 
   def start
-    log "starting #{self}"
+    log "starting #{name}"
     setup
 
     @running = true
@@ -13,14 +13,14 @@ module Bay::Nexus::Runner
       run
     end
 
-    log "stopped #{self}"
+    log "stopped #{name}"
   rescue => e
     log "error #{e}"
     #raise
   end
 
   def run
-    log "running #{self}"
+    log "running #{name}"
   end
 
   def stop_running
@@ -29,11 +29,11 @@ module Bay::Nexus::Runner
   end
 
   def setup
-    log "setting up #{self}"
+    log "setting up #{name}"
   end
 
   def debug
-    log "debugging #{self}"
+    log "debugging #{name}"
     setup
     2.times do
       run
