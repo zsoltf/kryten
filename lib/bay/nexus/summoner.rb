@@ -19,6 +19,10 @@ end
 
 module Bay::Nexus::Summoner
 
+  def name
+    self.class.to_s.gsub('::','_').downcase
+  end
+
   def init_daemon
     options = {
       log_output: false,
@@ -28,7 +32,6 @@ module Bay::Nexus::Summoner
       show_status_callback: :customstatus
     }
 
-    name = self.class.to_s.gsub('::','_').downcase
     @daemon = Daemons.run_proc(name, options) { start }
 
   end
@@ -55,10 +58,6 @@ module Bay::Nexus::Summoner
 
   def status
     daemon.show_status
-  end
-
-  def name
-    [daemon.pid.progname, daemon.pid.number + 1].join("-")
   end
 
 end
