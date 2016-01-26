@@ -48,15 +48,14 @@ module Bay
 
     def self.status
       status = proc do |replicant|
-        { name: [ replicant.daemon.pid.progname,
-                  replicant.daemon.pid.number + 1,
-        ].join("-"),
-        pid: replicant.daemon.pid,
-        pid_dir: replicant.daemon.pidfile_dir,
-        logfile: replicant.daemon.logfile,
-        output: replicant.daemon.output_logfile,
-        status: replicant.status,
-        object: replicant
+        {
+          name: replicant.daemon.pid.progname,
+          pid: replicant.daemon.pid,
+          pid_dir: replicant.daemon.pidfile_dir,
+          logfile: replicant.daemon.logfile,
+          output: replicant.daemon.output_logfile,
+          status: replicant.status,
+          object: replicant
         }
       end
       alive = self.alive.map(&status)
