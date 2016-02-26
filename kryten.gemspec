@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Zsolt Fekete"]
   spec.email         = ["zsoltf@me.com"]
 
-  spec.summary       = %q{Replicant Worker}
-  spec.description   = %q{Task runner with modular design. Includes runner, logger and daemon modules}
+  spec.summary       = %q{Modular Task Runner}
+  spec.description   = %q{Modular task runner and job manager. Supports daemons and threads.}
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or

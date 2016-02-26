@@ -1,7 +1,6 @@
 # Kryten
 
-Kryten Series 4000 Mechanoid is a modular task runner.
-
+Kryten Series 4000 Mechanoid is a modular task runner written in Ruby.
 
 ## Installation
 
