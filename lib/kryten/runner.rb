@@ -1,4 +1,4 @@
-module Bay::Nexus::Runner
+module Kryten::Runner
 
   def start
     log "starting #{name}"

@@ -1,4 +1,4 @@
-module Bay::Nexus::Helper
+module Kryten::Helper
 
   def hi
     puts "i am helper"

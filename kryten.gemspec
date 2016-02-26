@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'bay/nexus/version'
+require 'kryten/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "bay-nexus"
-  spec.version       = Bay::Nexus::VERSION
+  spec.name          = "kryten"
+  spec.version       = Kryten::VERSION
   spec.authors       = ["Zsolt Fekete"]
   spec.email         = ["zsoltf@me.com"]
 

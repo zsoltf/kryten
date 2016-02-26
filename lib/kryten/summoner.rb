@@ -17,7 +17,7 @@ module Daemons
   end
 end
 
-module Bay::Nexus::Summoner
+module Kryten::Summoner
 
   def name
     self.class.to_s.gsub('::','_').downcase

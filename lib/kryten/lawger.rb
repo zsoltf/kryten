@@ -1,6 +1,6 @@
 require 'logger'
 
-module Bay::Nexus::Lawger
+module Kryten::Lawger
 
   def log_path
     "/tmp/#{name}.log"

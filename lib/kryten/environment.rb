@@ -1,4 +1,4 @@
-module Bay::Nexus::Environment
+module Kryten::Environment
 
   def env
     @_env ||= ( ENV['RUBY_ENV'] || ENV['RACK_ENV'] || ENV['RAILS_ENV'] || 'development')
