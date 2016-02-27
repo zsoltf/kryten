@@ -20,7 +20,34 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+
+  require 'kryten'
+
+  # define work to be done in a class with a run method
+
+  class Work
+    include Kryten
+
+    def run
+      log "working..."
+    end
+
+  end
+
+  # The worker can run on it's own
+  Work.new.start        # loop run method in foreground
+  Work.new.init_daemon  # loop run method in a daemon process
+
+  # One or more workers can be managed by RedDwarf
+  # Power it up by passing a block with an array of workers
+  RedDwarf.power_up { Work.new }
+
+  # power_up is non-blocking. Send the power_down message stops all workers
+  RedDwarf.power_down
+
+
+```
 
 ## Development
 
