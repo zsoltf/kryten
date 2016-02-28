@@ -19,10 +19,6 @@ end
 
 module Kryten::Summoner
 
-  def name
-    self.class.to_s.gsub('::','_').downcase
-  end
-
   def init_daemon
     options = {
       log_output: false,

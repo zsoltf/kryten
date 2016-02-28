@@ -45,4 +45,8 @@ module Kryten::Runner
     puts message
   end
 
+  def name
+    self.class.to_s.gsub('::','_').downcase
+  end
+
 end

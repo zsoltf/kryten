@@ -1,9 +1,9 @@
-module RedDwarf
+module Kryten::BackgroundJobs
 
-  def self.power_up
+  def self.start
 
     unless self.daemons.empty?
-      puts "RedDwarf is already running"
+      puts "BackgroundJobs is already running"
       return
     end
 
@@ -36,20 +36,20 @@ module RedDwarf
   end
 
   def self.monitor
-    self.power_up unless self.running?
+    self.start unless self.running?
     self.status
   end
 
   def self.status
-    status = proc do |replicant|
+    status = proc do |job|
       {
-        name: replicant.daemon.pid.progname,
-        pid: replicant.daemon.pid,
-        pid_dir: replicant.daemon.pidfile_dir,
-        logfile: replicant.daemon.logfile,
-        output: replicant.daemon.output_logfile,
-        status: replicant.status,
-        object: replicant
+        name: job.daemon.pid.progname,
+        pid: job.daemon.pid,
+        pid_dir: job.daemon.pidfile_dir,
+        logfile: job.daemon.logfile,
+        output: job.daemon.output_logfile,
+        status: job.status,
+        object: job
       }
     end
     alive = self.alive.map(&status)
@@ -59,9 +59,9 @@ module RedDwarf
     { alive: alive, dead: dead }
   end
 
-  def self.start replicant
+  def self.run job
     self.can_shutdown = false
-    daemon = self.daemon replicant
+    daemon = self.daemon job
     if daemon.pid
       puts "daemon #{daemon} is still running"
     else
@@ -70,8 +70,8 @@ module RedDwarf
     self.can_shutdown = true
   end
 
-  def self.stop replicant
-    daemon = self.daemon replicant
+  def self.halt job
+    daemon = self.daemon job
     if daemon.pid
       daemon.stop
     else
@@ -87,7 +87,7 @@ module RedDwarf
     @sd
   end
 
-  def self.power_down
+  def self.stop
 
     return unless self.can_shutdown
 
@@ -103,7 +103,7 @@ module RedDwarf
         end
       end
     else
-      puts "RedDwarf has not been started yet"
+      puts "BackgroundJobs has not been started yet"
     end
 
   end

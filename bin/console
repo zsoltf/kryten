@@ -2,7 +2,6 @@
 
 require "bundler/setup"
 require "kryten"
-require "reddwarf"
 
 require "pry"
 Pry.start
