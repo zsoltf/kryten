@@ -4,13 +4,15 @@ module Kryten::Runner
     log "starting #{name}"
     setup
 
-    @running = true
+    @started = true
     Signal.trap("INT", proc { stop_running })
     Signal.trap("TERM", proc { stop_running })
 
-    while @running do
+    while @started do
       sleep @timer || 4
+      @running = true
       run
+      @running = false
     end
 
     log "stopped #{name}"
@@ -25,7 +27,7 @@ module Kryten::Runner
 
   def stop_running
     # no logging here, this is a signal handler
-    @running = false
+    @started = false
   end
 
   def setup

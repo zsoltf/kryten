@@ -1,10 +1,10 @@
-class Kryten::ThreadedTask
+module Kryten::Weaver
   attr_reader :thread, :name
 
   def initialize name
     @name = name
     log "initializing"
-    @working = false
+    @running = false
   end
 
   def init_thread
@@ -12,34 +12,23 @@ class Kryten::ThreadedTask
   end
 
   def run
-    @working = true
     log "running"
-    work = rand(10)*2
+    work = rand(5)*2;
     log "working for #{work} "
     sleep work
     log "done working"
-    @working = false
-  end
-
-  def start
-    log "starting"
-    loop { run; sleep 3 }
   end
 
   def stop
     log "stopping"
-    sleep 0.1 while @working
+    sleep 0.1 while @running
     @thread.kill if @thread
     log "stopped"
   end
 
-  def log message
-    puts "#@name: #{message}"
-  end
-
 end
 
-class Kryten::ThreadedJobs
+class Kryten::ThreadedFactory
   attr_reader :threads
 
   def initialize(blocking=false)
