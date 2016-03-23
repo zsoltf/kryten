@@ -4,7 +4,6 @@ module Kryten::Runner
 
   def initialize title=nil
     @name, @running, @started = title, false, false
-    log "initializing"
     Signal.trap("INT", proc { stop_running })
   end
 

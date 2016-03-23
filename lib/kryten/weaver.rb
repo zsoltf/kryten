@@ -43,7 +43,7 @@ class Kryten::Supervisor
   def self.stop
     if @started
       @workers.each(&:stop_work)
-      sleep 1 while self.running?
+      sleep 1 while @workers.detect(&:running)
       @started = false
     end
   end
