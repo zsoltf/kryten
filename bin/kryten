@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "kryten"
+require "pry"
+
+include Kryten
+
+class Work
+  include ThreadedTask
+end
+
+workers = []
+workers << Work.new('work1')
+workers << Work.new('work2')
+w3 = Work.new('work3').workers do
+  [Work.new('work3sub1'),
+   Work.new('work3sub2')]
+end
+workers << w3
+
+Supervisor.start(workers)
+
+sleep 10

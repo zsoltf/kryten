@@ -1,54 +1,69 @@
 module Kryten::Runner
+  attr_accessor :timer
+  attr_reader :running, :started
+
+  def initialize title=nil
+    @name, @running, @started = title, false, false
+    log "initializing"
+    Signal.trap("INT", proc { stop_running })
+  end
 
   def start
-    log "starting #{name}"
     setup
-
+    log "starting"
     @started = true
-    Signal.trap("INT", proc { stop_running })
-    Signal.trap("TERM", proc { stop_running })
 
-    while @started do
-      sleep @timer || 4
+    while started do
+      sleep timer
       @running = true
       run
       @running = false
     end
 
-    log "stopped #{name}"
+    log "stopped"
+    true
   rescue => e
     log "error #{e}"
     #raise
   end
 
   def run
-    log "running #{name}"
+    log "running"
+  end
+
+  def timer
+    @timer || 4
   end
 
   def stop_running
-    # no logging here, this is a signal handler
     @started = false
   end
 
   def setup
-    log "setting up #{name}"
+    log "setting up"
   end
 
   def debug
-    log "debugging #{name}"
+    log "debugging"
     setup
     2.times do
       run
-      sleep @timer || 4
+      sleep timer
     end
   end
 
   def log message
-    puts message
+    puts [name, message].join(': ')
   end
 
   def name
-    self.class.to_s.gsub('::','_').downcase
+    @name || self.class.to_s.gsub('::','_').downcase
+  end
+
+  def status
+    log [started ? 'on and ' : 'off and ',
+         running ? 'running' : 'sleeping'].join
+    started
   end
 
 end

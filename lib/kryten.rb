@@ -6,17 +6,13 @@ require "kryten/runner"
 require "kryten/helper"
 require "kryten/environment"
 
-module Kryten::Worker
-  include Kryten::Lawger
+module Kryten::Task
+  include Kryten::Runner
+  #include Kryten::Lawger
   include Kryten::Helper
 end
 
-module Kryten::Task
-  include Kryten::Runner
-  include Kryten::Worker
-end
-
-module Kryten::BackgroundTask
+module Kryten::DaemonTask
   include Kryten::Task
   include Kryten::Summoner
 end

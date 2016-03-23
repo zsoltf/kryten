@@ -2,6 +2,16 @@
 
 require "bundler/setup"
 require "kryten"
-
 require "pry"
-Pry.start
+
+include Kryten
+
+class Work
+  include ThreadedTask
+end
+
+w1 = Work.new('work1')
+w2 = Work.new('work2')
+w3 = Work.new('work3')
+
+binding.pry

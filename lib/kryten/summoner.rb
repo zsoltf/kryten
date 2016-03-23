@@ -1,3 +1,5 @@
+# WARNING: Legacy Code
+
 require 'daemons'
 
 module Daemons
@@ -58,7 +60,7 @@ module Kryten::Summoner
 
 end
 
-module Kryten::BackgroundFactory
+module Kryten::RedDwarf
 
   def self.start
 

@@ -1,57 +1,51 @@
 module Kryten::Weaver
-  attr_reader :thread, :name
+  attr_reader :worker
+  attr_accessor :workers
 
-  def initialize name
-    @name = name
-    log "initializing"
-    @running = false
+  def start_work
+    workers.each(&:start_work) if workers
+
+    if worker && worker.alive?
+      log 'worker already running'
+      return false
+    end
+    @worker = Thread.new { start }
   end
 
-  def init_thread
-    @thread = Thread.new { start }
+  def stop_work
+    workers.each(&:stop_work) if workers
+    stop_running
   end
 
-  def run
-    log "running"
-    work = rand(5)*2;
-    log "working for #{work} "
-    sleep work
-    log "done working"
-  end
-
-  def stop
-    log "stopping"
-    sleep 0.1 while @running
-    @thread.kill if @thread
-    log "stopped"
+  def workers
+    if block_given?
+      @workers = Array(yield)
+      return self
+    end
+    @workers
   end
 
 end
 
-class Kryten::ThreadedFactory
-  attr_reader :threads
-
-  def initialize(blocking=false)
-    trap(:INT) { stop && exit }
-    @bots = Array(yield) if block_given?
-    start
-    sleep 1 while blocking
+class Kryten::Supervisor
+  def self.start(workers)
+    @workers = workers
+    @started = true
+    Signal.trap("INT", proc { self.stop })
+    workers.each(&:start_work)
   end
 
-  def start
-    return "factory already running" if @running
-    @bots.each(&:init_thread)
-    #binding.pry
-    @running = true
-    puts 'factory started'
-    "factory started"
+  def self.stop
+    if @started
+      @workers.each(&:stop_work)
+      sleep 1 while @workers.detect(&:running)
+      @started = false
+    end
   end
 
-  def stop
-    puts 'stopping factory'
-    @bots.map { |bot| Thread.new { bot.stop } }.each(&:join)
-    @running = false
-    puts 'factory stopped'
-    'factory stopped'
+  def self.running?
+    @workers.detect(&:running)
   end
+
 end
+
