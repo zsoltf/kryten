@@ -23,11 +23,12 @@ Or install it yourself as:
 ```ruby
 
   require 'kryten'
+  include Kryten
 
   # define work to be done in a class with a run method
 
   class Work
-    include Kryten
+    include ThreadedTask
 
     def run
       log "working..."
@@ -35,25 +36,19 @@ Or install it yourself as:
 
   end
 
-  # The worker can run on it's own
+  # The worker can run on it's own and responds to the interrupt signal.
   Work.new.start        # loop run method in foreground
-  Work.new.init_daemon  # loop run method in a daemon process
+  Work.new.start_worker # loop run method in a thread
 
-  # One or more workers can be managed by RedDwarf
-  # Power it up by passing a block with an array of workers
-  RedDwarf.power_up { Work.new }
-
-  # power_up is non-blocking. Send the power_down message stops all workers
-  RedDwarf.power_down
+  # Two or more workers can be managed by the Supervisor
+  tasks = []
+  tasks << FirstTask.new
+  tasks << SecondTask.new
+  Supervisor.start(tasks)
 
 
 ```
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
