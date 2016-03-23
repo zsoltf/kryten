@@ -1,14 +1,23 @@
 require 'logger'
 
 module Kryten::Lawger
+  attr_accessor :logger
 
   def log_path
-    "/tmp/#{name}.log"
+    "log/#{name}.log"
   end
 
   def log message
+    default_log_format
+    logger.debug(name) { message }
+  end
+
+  def logger
     @logger ||= Logger.new(log_path)
-    @logger.debug message
+  end
+
+  def default_log_format
+    nil
   end
 
 end

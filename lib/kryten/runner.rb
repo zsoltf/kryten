@@ -57,7 +57,7 @@ module Kryten::Runner
   end
 
   def name
-    @name || self.class.to_s.gsub('::','_').downcase
+    @name || self.class.to_s.gsub('::','-').downcase
   end
 
   def status
