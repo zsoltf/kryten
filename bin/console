@@ -3,6 +3,7 @@
 require "bundler/setup"
 require "kryten"
 require "pry"
+require './test/test_helper'
 
 include Kryten
 
@@ -10,8 +11,13 @@ class Work
   include ThreadedTask
 end
 
-w1 = Work.new('work1')
-w2 = Work.new('work2')
-w3 = Work.new('work3')
+w1 = Tester.new('work1')
+w2 = Tester.new('work2')
+w3 = Tester.new('work3')
+w3.workers do
+  [Tester.new('w3sub1'), Tester.new('w3sub2')]
+end
+
+visor = Supervisor.start_workers([w1,w2,w3])
 
 binding.pry

@@ -38,18 +38,24 @@ class Kryten::Supervisor
     @started = true
     Signal.trap("INT", proc { self.stop })
     workers.each(&:start_work)
+    self
+  end
+
+  def self.workers
+    @workers
   end
 
   def self.stop
     if @started
       @workers.each(&:stop_work)
       sleep 1 while @workers.detect(&:running)
+      sleep 3
       @started = false
     end
   end
 
   def self.running?
-    @workers.detect(&:running)
+    @started
   end
 
 end

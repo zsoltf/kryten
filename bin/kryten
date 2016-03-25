@@ -8,6 +8,15 @@ include Kryten
 
 class Work
   include ThreadedTask
+  def log message
+    puts name + ': ' + message
+  end
+  def run
+    work = rand(5)+1;
+    log "working for #{work}"
+    sleep work
+    log "done working"
+  end
 end
 
 workers = []
@@ -20,5 +29,3 @@ end
 workers << w3
 
 Supervisor.start(workers)
-
-sleep 10

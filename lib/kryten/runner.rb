@@ -23,7 +23,7 @@ module Kryten::Runner
     true
   rescue => e
     log "error #{e}"
-    #raise
+    raise
   end
 
   def run
