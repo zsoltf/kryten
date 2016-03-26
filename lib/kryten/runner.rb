@@ -4,13 +4,15 @@ module Kryten::Runner
 
   def initialize title=nil
     @name, @running, @started = title, false, false
-    Signal.trap("INT", proc { stop_running })
   end
 
   def start
     setup
     log "starting"
     @started = true
+
+    Signal.trap("INT", proc { stop_running })
+    Signal.trap("TERM", proc { stop_running })
 
     while started do
       sleep timer

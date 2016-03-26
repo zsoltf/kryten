@@ -7,9 +7,10 @@ require "pry"
 include Kryten
 
 class Work
-  include ThreadedTask
+  include Runner
+  include Daemon
   def log message
-    puts name + ': ' + message
+    puts "#{Process.pid} "+name + ': ' + message
   end
   def run
     work = rand(5)+1;
@@ -28,6 +29,12 @@ w3 = Work.new('work3').workers do
 end
 workers << w3
 
+=begin
 Daemons.run_proc('kryten') do
   Supervisor.start(workers)
 end
+=end
+
+#binding.pry
+
+Supervisor.start(workers)
