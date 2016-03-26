@@ -1,42 +1,6 @@
+# legacy
+
 require 'daemons'
-
-module Kryten::Daemon
-  attr_reader :worker
-  attr_accessor :workers
-
-  def start_work
-    workers.each(&:start_work) if workers
-
-    if worker && worker.running?
-      log 'worker already running'
-      return false
-    end
-    options = {
-      log_output: false,
-      backtrace: false,
-      multiple: false,
-      ARGV: ['start']
-    }
-    @worker.start_all if @worker
-    @worker ||= Daemons.run_proc(name, options) { start }
-  end
-
-  def stop_work
-    workers.each(&:stop_work) if workers
-    stop_running
-    worker.stop_all
-  end
-
-  def workers
-    if block_given?
-      @workers = Array(yield)
-      return self
-    end
-    @workers
-  end
-
-end
-
 
 module Daemons
   class Application

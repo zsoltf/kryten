@@ -1,10 +1,12 @@
 require "kryten/version"
-require "kryten/summoner"
-require "kryten/weaver"
-require "kryten/lawger"
-require "kryten/runner"
-require "kryten/helper"
 require "kryten/environment"
+
+require "kryten/runner"
+require "kryten/lawger"
+require "kryten/helper"
+
+require "kryten/weaver"
+require "kryten/daemon"
 
 module Kryten::Task
   include Kryten::Runner
@@ -12,12 +14,12 @@ module Kryten::Task
   include Kryten::Helper
 end
 
-module Kryten::DaemonTask
-  include Kryten::Task
-  include Kryten::Summoner
-end
-
 module Kryten::ThreadedTask
   include Kryten::Task
   include Kryten::Weaver
+end
+
+module Kryten::BackgroundTask
+  include Kryten::Task
+  include Kryten::Daemon
 end

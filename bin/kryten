@@ -6,12 +6,12 @@ require "pry"
 
 include Kryten
 
+class WorkList
+  include BackgroundTask
+end
+
 class Work
-  include Runner
-  include Daemon
-  def log message
-    puts "#{Process.pid} "+name + ': ' + message
-  end
+  include BackgroundTask
   def run
     work = rand(5)+1;
     log "working for #{work}"
@@ -20,21 +20,13 @@ class Work
   end
 end
 
-workers = []
-workers << Work.new('work1')
-workers << Work.new('work2')
-w3 = Work.new('work3').workers do
-  [Work.new('work3sub1'),
-   Work.new('work3sub2')]
+work = WorkList.new('visor').workers do
+  [ Work.new('work1'),
+    Work.new('work2'),
+    Work.new('work3').workers do
+    [ Work.new('work3sub1'),
+      Work.new('work3sub2') ]
+    end ]
 end
-workers << w3
 
-=begin
-Daemons.run_proc('kryten') do
-  Supervisor.start(workers)
-end
-=end
-
-#binding.pry
-
-Supervisor.start(workers)
+work.start
