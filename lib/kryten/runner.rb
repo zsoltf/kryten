@@ -6,10 +6,13 @@ module Kryten::Runner
     @name, @running, @started = title, false, false
   end
 
-  def start
+  def setup
+    log "setting up"
     Signal.trap("INT", proc { stop_running })
     Signal.trap("TERM", proc { stop_running })
+  end
 
+  def start
     setup
     log "started"
     @started = true
@@ -35,7 +38,7 @@ module Kryten::Runner
   # stop the loop
   def stop_running
     @started = false
-    stop
+    shutdown
   end
 
   def debug
@@ -62,12 +65,8 @@ module Kryten::Runner
   end
 
   # hook methods
-  def stop; nil; end
+  def shutdown; nil; end
 
   def run; nil; end
-
-  def setup
-    log "setting up"
-  end
 
 end

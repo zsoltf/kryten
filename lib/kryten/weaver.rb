@@ -7,19 +7,24 @@ module Kryten::Weaver
       log 'starting workers'
       workers.each(&:start_work)
     end
+  end
 
+  def start_work
     if worker && worker.alive?
       log 'worker already running'
       return false
     end
-  end
 
-  def start_work
+    @started = true
     @worker = Thread.new { start }
   end
 
-  def stop
-    workers.each(&:stop) if workers
+  def shutdown
+    workers.each(&:stop_running) if workers
+  end
+
+  def stop_work
+    stop_running
   end
 
   def workers
@@ -28,6 +33,10 @@ module Kryten::Weaver
       return self
     end
     @workers
+  end
+
+  def log_path
+    "/tmp/#{name}.log"
   end
 
 end

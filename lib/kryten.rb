@@ -19,6 +19,15 @@ module Kryten::ThreadedTask
   include Kryten::Weaver
 end
 
+class Kryten::ThreadedGroup
+  extend Kryten::ThreadedTask
+  def self.setup
+    Signal.trap("INT", proc { stop_work })
+    Signal.trap("TERM", proc { stop_work })
+    super
+  end
+end
+
 module Kryten::BackgroundTask
   include Kryten::Task
   include Kryten::Daemon

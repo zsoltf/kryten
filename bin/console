@@ -7,18 +7,31 @@ require "pry"
 include Kryten
 
 class Work
-  include Kryten::Runner
-  include Kryten::Lawger
-  include Kryten::Daemon
+  include BackgroundTask
 end
+
+class Work
+  include ThreadedTask
+  def run
+    work = rand(5)+1;
+    log "working for #{work}"
+    sleep work
+    log "done working"
+  end
+end
+
+tasks = [ Work.new('w3sub1'), Work.new('w3sub2') ]
 
 w1 = Work.new('work1')
 w2 = Work.new('work2')
 w3 = Work.new('work3')
 w3.workers do
-  [Work.new('w3sub1'), Work.new('w3sub2')]
+  tasks
 end
 
-#visor = Supervisor.start_workers([w1,w2,w3])
+v = ThreadedGroup.workers do
+  [w1,w2,w3]
+end
 
 binding.pry
+#w3.start

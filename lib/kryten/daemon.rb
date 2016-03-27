@@ -34,10 +34,13 @@ module Kryten::Daemon
   end
 
   def stop
+=begin
     if workers
       workers.each { |w| fork { w.stop }}
       Process.waitall
     end
+=end
+    workers.each(&:stop) if workers
     worker.stop_all if worker
   end
 
