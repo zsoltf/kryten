@@ -7,13 +7,18 @@ module Kryten::Lawger
     "log/#{name}.log"
   end
 
-  def log message
+  def log(level = :debug, message)
     default_log_format
-    logger.debug(name) { message }
+    logger.progname = name
+    logger.send(level, message )
   end
 
   def logger
-    @logger ||= Logger.new(log_path)
+    unless @logger
+      @logger = Logger.new(log_path)
+      default_log_format
+    end
+    @logger
   end
 
   def default_log_format

@@ -27,7 +27,7 @@ module Kryten::Runner
     log "stopped"
     true
   rescue => e
-    log "error #{e}"
+    log :error, "error: #{e} - from: #{e.backtrace.first}"
     raise
   end
 

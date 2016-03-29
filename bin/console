@@ -64,5 +64,20 @@ mixed_work = Work.new('mixy').mixed.workers do
     end ]
 end
 
+class CrashWork
+  include BackgroundTask
+  def run
+    sleep rand(3) + 2
+    log 'working'
+    raise 'boom' if rand(5) == 0
+  end
+end
+
+crashing_work = CrashWork.new('crashy').workers do
+  [ Work.new('regular1'),
+    Work.new('regular2'),
+    CrashWork.new('crash3') ]
+end
+
 binding.pry
 #w3.start
