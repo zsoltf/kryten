@@ -13,14 +13,19 @@ module Kryten::Runner
   end
 
   def start
+    before_setup
     setup
+    after_setup
+
     log "started"
     @started = true
 
     while started do
       sleep timer
       @running = true
+      before_run
       run
+      after_run
       @running = false
     end
 
@@ -65,8 +70,11 @@ module Kryten::Runner
   end
 
   # hook methods
-  def shutdown; nil; end
-
+  def before_setup; nil; end
+  def after_setup; nil; end
+  def before_run; nil; end
   def run; nil; end
+  def after_run; nil; end
+  def shutdown; nil; end
 
 end
