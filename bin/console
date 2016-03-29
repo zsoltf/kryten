@@ -6,11 +6,24 @@ require "pry"
 
 include Kryten
 
-class Work
+class WorkList
   include BackgroundTask
 end
 
 class Work
+  include BackgroundTask
+  def run
+    work = rand(5)+1;
+    log "working for #{work}"
+    sleep work
+    log "done working"
+  end
+  def timer
+    0.1
+  end
+end
+
+class ThreadedWork
   include ThreadedTask
   def run
     work = rand(5)+1;
@@ -18,19 +31,37 @@ class Work
     sleep work
     log "done working"
   end
+  def timer
+    0.1
+  end
 end
 
-tasks = [ Work.new('w3sub1'), Work.new('w3sub2') ]
 
-w1 = Work.new('work1')
-w2 = Work.new('work2')
-w3 = Work.new('work3')
-w3.workers do
-  tasks
+work = WorkList.new('visor').workers do
+  [ Work.new('work1'),
+    Work.new('work2'),
+    Work.new('work3').workers do
+    [ Work.new('work3sub1'),
+      Work.new('work3sub2') ]
+    end ]
 end
 
-v = ThreadedGroup.workers do
-  [w1,w2,w3]
+threaded_work = ThreadVisor.workers do
+  [ ThreadedWork.new('thread work1'),
+    ThreadedWork.new('thread work2'),
+    ThreadedWork.new('thread work3').workers do
+    [ ThreadedWork.new('thread work3sub1'),
+      ThreadedWork.new('thread work3sub2') ]
+    end ]
+end
+
+mixed_work = Work.new('mixy').mixed.workers do
+  [ Work.new('mixy 1 process').workers do
+      Work.new('mixy 1 subprocess')
+    end,
+    ThreadedWork.new('mixy 2 thread').workers do
+      ThreadedWork.new('mixy2 subthread')
+    end ]
 end
 
 binding.pry

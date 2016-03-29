@@ -5,6 +5,7 @@ module Kryten::Daemon
   attr_accessor :workers
 
   def setup
+    super
     if workers
       log 'starting workers'
       workers.each(&:start_work)
@@ -33,15 +34,23 @@ module Kryten::Daemon
     "/tmp/#{name}.log"
   end
 
-  def stop
-=begin
-    if workers
-      workers.each { |w| fork { w.stop }}
+  def mixed
+    @mixed = true
+    self
+  end
+
+  def shutdown
+    if @mixed && workers
+      workers.each(&:stop_running)
+    elsif workers
+      workers.each { |w| fork { w.shutdown }}
       Process.waitall
     end
-=end
-    workers.each(&:stop) if workers
     worker.stop_all if worker
+  end
+
+  def stop_work
+    stop_running
   end
 
   def workers

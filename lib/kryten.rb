@@ -19,7 +19,7 @@ module Kryten::ThreadedTask
   include Kryten::Weaver
 end
 
-class Kryten::ThreadedGroup
+class Kryten::ThreadVisor
   extend Kryten::ThreadedTask
   def self.setup
     Signal.trap("INT", proc { stop_work })
