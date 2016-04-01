@@ -3,6 +3,10 @@ require 'logger'
 module Kryten::Lawger
   attr_accessor :logger
 
+  def name
+    @name || self.class.to_s.gsub('::','-').downcase
+  end
+
   def log_path
     "log/#{name}.log"
   end

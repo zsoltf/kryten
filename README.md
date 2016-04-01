@@ -1,6 +1,7 @@
 # Kryten
 
 Kryten Series 4000 Mechanoid is a modular task runner written in Ruby.
+It's meant to run simple recurring tasks in the background using threads or daemons.
 
 ## Installation
 
@@ -25,7 +26,9 @@ Or install it yourself as:
   require 'kryten'
   include Kryten
 
-  # define work to be done in a class with a run method
+  # Define work to be done in a class with a run method.
+  # This method will be run at an interval defined by the timer method.
+  # Execution happens in the background based on the type of task included.
 
   class Work
     include ThreadedTask
@@ -36,15 +39,31 @@ Or install it yourself as:
 
   end
 
-  # The worker can run on it's own and responds to the interrupt signal.
+  # The worker can run on it's own and responds to interrupt signals.
   Work.new.start        # loop run method in foreground
   Work.new.start_worker # loop run method in a thread
 
-  # Two or more workers can be managed by the Supervisor
-  tasks = []
-  tasks << FirstTask.new
-  tasks << SecondTask.new
-  Supervisor.start(tasks)
+  # A worker can have any number of child workers
+  class WorkList
+    include ThreadedTask
+  end
+
+  WorkList.new('app').workers do
+    [Work.new('task1'), Work.new('task2')]
+  end
+
+  # Run the work in separate processes instead of threads
+  class WorkList
+    include BackgroundTask
+  end
+
+  class Work
+    include BackgroundTask
+  end
+
+  WorkList.new('app').workers do
+    [Work.new('task1'), Work.new('task2')]
+  end
 
 
 ```
