@@ -8,6 +8,7 @@ require "kryten/helper"
 require "kryten/weaver"
 require "kryten/daemon"
 
+# TASK
 module Kryten::Task
   include Kryten::Runner
   include Kryten::Lawger
@@ -19,16 +20,26 @@ module Kryten::ThreadedTask
   include Kryten::Weaver
 end
 
-class Kryten::ThreadVisor
+module Kryten::BackgroundTask
+  include Kryten::Task
+  include Kryten::Daemon
+end
+
+
+# JOB
+class Kryten::Job
+  include Kryten::BackgroundTask
+end
+
+class Kryten::ThreadedJob
+  include Kryten::ThreadedTask
+end
+
+class Kryten::ThreadedVisor
   extend Kryten::ThreadedTask
   def self.setup
     Signal.trap("INT", proc { stop_work })
     Signal.trap("TERM", proc { stop_work })
     super
   end
-end
-
-module Kryten::BackgroundTask
-  include Kryten::Task
-  include Kryten::Daemon
 end

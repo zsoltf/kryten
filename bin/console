@@ -46,7 +46,7 @@ work = WorkList.new('visor').workers do
     end ]
 end
 
-threaded_work = ThreadVisor.workers do
+threaded_work = ThreadedVisor.workers do
   [ ThreadedWork.new('thread work1'),
     ThreadedWork.new('thread work2'),
     ThreadedWork.new('thread work3').workers do
