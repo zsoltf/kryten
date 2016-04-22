@@ -3,7 +3,7 @@ require "kryten/environment"
 
 require "kryten/runner"
 require "kryten/lawger"
-require "kryten/setup"
+require "kryten/config"
 
 require "kryten/weaver"
 require "kryten/daemon"
@@ -13,6 +13,10 @@ require "kryten/remote"
 module Kryten::Task
   include Kryten::Runner
   include Kryten::Lawger
+
+  def self.included(base)
+    base.extend Kryten::Config
+  end
 end
 
 module Kryten::ThreadedTask

@@ -2,8 +2,7 @@ require 'yaml'
 
 module Kryten
 
-  module Setup
-    module_function
+  module Config
 
     def base_path
       File.expand_path(File.join(ENV['BUNDLE_GEMFILE'], '..'))
@@ -19,12 +18,14 @@ module Kryten
       file = File.open(File.join(self.base_path, "config/#{classname}.yml"))
       YAML.load(file)[classname]
     end
-  end
 
-  class Config
-    def self.fetch(entry)
-      @config ||= Setup.configure
-      @config.fetch(entry)
+    def config entry=nil
+      @config ||= configure
+      if entry
+        @config.fetch(entry)
+      else
+        @config
+      end
     end
   end
 
