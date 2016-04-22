@@ -13,7 +13,6 @@ require "kryten/remote"
 module Kryten::Task
   include Kryten::Runner
   include Kryten::Lawger
-  include Kryten::Helper
 end
 
 module Kryten::ThreadedTask
