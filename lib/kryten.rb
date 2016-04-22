@@ -3,7 +3,7 @@ require "kryten/environment"
 
 require "kryten/runner"
 require "kryten/lawger"
-require "kryten/helper"
+require "kryten/setup"
 
 require "kryten/weaver"
 require "kryten/daemon"
