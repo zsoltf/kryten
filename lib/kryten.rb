@@ -7,6 +7,7 @@ require "kryten/helper"
 
 require "kryten/weaver"
 require "kryten/daemon"
+require "kryten/remote"
 
 # TASK
 module Kryten::Task
