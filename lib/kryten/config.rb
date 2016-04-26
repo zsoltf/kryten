@@ -13,7 +13,7 @@ module Kryten
       classname = if classname.one?
                     classname.first.downcase
                   else
-                    classname[0...-1].collect(&:downcase).join('-')
+                    classname.collect(&:downcase).join('-')
                   end
       file = File.open(File.join(self.base_path, "config/#{classname}.yml"))
       YAML.load(file)[classname]
