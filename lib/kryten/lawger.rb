@@ -12,7 +12,6 @@ module Kryten::Lawger
   end
 
   def log(level = :debug, message)
-    default_log_format
     logger.progname = name
     logger.send(level, message )
   end
