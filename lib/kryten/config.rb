@@ -1,4 +1,5 @@
 require 'yaml'
+require 'ostruct'
 
 module Kryten
 
@@ -16,7 +17,7 @@ module Kryten
                     classname.collect(&:downcase).join('-')
                   end
       file = File.open(File.join(self.base_path, "config/#{classname}.yml"))
-      YAML.load(file)[classname]
+      OpenStruct.new(YAML.load(file)[classname])
     end
 
     def config entry=nil
